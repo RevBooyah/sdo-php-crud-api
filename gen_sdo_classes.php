@@ -51,29 +51,19 @@ function ListFields($table) {
 
     print("\n\n\nclass DB_$table extends SDO {\n");
 
-    //$fields = mysql_list_fields(DB_NAME, $table);
     $fields = array();
-    //$qry = $pdo->prepare("DESCRIBE $table");
-    //$qry->execute();
-    //$fields=$qry->fetchAll(PDO::FETCH_COLUMN);
-
+   
     $qry = $pdo->query("SELECT * FROM $table LIMIT 0");
     for($x=0;$x < $qry->columnCount(); $x++) {
         $fields[$x] = $qry->getColumnMeta($x);
         //print_r($fields[$x]);
     }
 
-    //print_r($fields);
-
     $fieldnames=array();
 
     foreach($fields as $field) {
         echo "\tpublic \$".$field['name'].";\n";
     }
-
-
-    //$fa[$i]=mysql_field_name($fields,$i);
-
 
     print("\n\tpublic function __construct(\$id=0) {\n");
     print("\t\t\$this->className='".$table."';\n");
@@ -124,4 +114,3 @@ function ListFields($table) {
     print("} //End of class $table");
 
 }
-?>
